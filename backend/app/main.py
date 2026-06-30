@@ -22,3 +22,7 @@ def root():
     return {
         "message": "CodeSync API Running"
     }
+
+@app.get("/test")
+def test():
+    return {"status": "ok"}
