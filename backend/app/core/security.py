@@ -1,44 +1,27 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from jose import jwt
+from pwdlib import PasswordHash
 
-SECRET_KEY = "codesync-secret-key"
-
-ALGORITHM = "HS256"
-
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
-
-from passlib.context import CryptContext
 SECRET_KEY = "codesync-secret-key"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-pwd_context = CryptContext(
-    schemes=["bcrypt"],
-    deprecated="auto"
-)
+password_hash = PasswordHash.recommended()
 
 
 def hash_password(password: str):
+    return password_hash.hash(password)
 
-    return pwd_context.hash(password)
 
+def verify_password(password: str, hashed_password: str):
+    return password_hash.verify(password, hashed_password)
 
-def verify_password(
-    plain_password,
-    hashed_password
-):
-
-    return pwd_context.verify(
-        plain_password,
-        hashed_password
-    )
 
 def create_access_token(data: dict):
-
     to_encode = data.copy()
 
-    expire = datetime.utcnow() + timedelta(
+    expire = datetime.now(timezone.utc) + timedelta(
         minutes=ACCESS_TOKEN_EXPIRE_MINUTES
     )
 

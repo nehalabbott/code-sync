@@ -6,8 +6,12 @@ from app.database.database import Base
 class Room(Base):
     __tablename__ = "rooms"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
 
     room_code = Column(String, unique=True, nullable=False)
 
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner_id = Column(
+        Integer,
+        ForeignKey("users.id"),
+        nullable=True
+    )
