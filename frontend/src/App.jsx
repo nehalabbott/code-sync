@@ -4,8 +4,8 @@ import Editor from "@monaco-editor/react";
 function App() {
 
   const [socket, setSocket] = useState(null);
-  const [code, setCode] = useState("// Welcome to CodeSync 🚀");
-  const [room, setRoom] = useState("ABC123");
+  const [code, setCode] = useState("// Welcome to CodeSync // start writing your code");
+  const [room, setRoom] = useState("Your room key");
 
   function connect() {
 
@@ -16,7 +16,7 @@ function App() {
     ws.onopen = () => {
 
       console.log("Connected!");
-
+      console.log("Room:", room);
     };
 
     ws.onmessage = (event) => {
