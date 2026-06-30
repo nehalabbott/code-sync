@@ -1,5 +1,23 @@
 services:
 
+  backend:
+    build:
+      context: ./backend
+
+    container_name: codesync_backend
+
+    ports:
+      - "8001:8000"
+
+    volumes:
+      - ./backend:/app
+
+    depends_on:
+      - postgres
+
+    environment:
+      DATABASE_URL: postgresql://codesync:codesync@postgres:5432/codesync
+
   postgres:
     image: postgres:17
     container_name: codesync_postgres
@@ -17,7 +35,6 @@ services:
 
   redis:
     image: redis:8
-
     container_name: codesync_redis
 
     ports:
@@ -26,10 +43,14 @@ services:
   adminer:
     image: adminer
     container_name: codesync_adminer
+
     restart: always
+
     ports:
       - "8080:8080"
+
     depends_on:
       - postgres
+
 volumes:
   postgres_data:

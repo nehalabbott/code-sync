@@ -1,29 +1,27 @@
-import random
-import string
+import os
 
-from fastapi import APIRouter
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-router = APIRouter(prefix="/rooms", tags=["Rooms"])
+DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    "postgresql://codesync:codesync@localhost:5432/codesync"
+)
+
+engine = create_engine(DATABASE_URL)
+
+SessionLocal = sessionmaker(
+    autocommit=False,
+    autoflush=False,
+    bind=engine
+)
+
+Base = declarative_base()
 
 
-@router.post("/")
-def create_room():
-
-    code = "".join(
-
-        random.choices(
-
-            string.ascii_uppercase +
-            string.digits,
-
-            k=6
-
-        )
-
-    )
-
-    return {
-
-        "room_code": code
-
-    }
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
