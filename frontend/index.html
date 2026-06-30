@@ -1,95 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>CodeSync</title>
-
-    <style>
-
-        body{
-            font-family:Arial;
-            margin:40px;
-        }
-
-        textarea{
-
-            width:100%;
-            height:500px;
-
-            font-size:18px;
-
-            padding:10px;
-
-            box-sizing:border-box;
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<h1>CodeSync </h1>
-
-<input
-id="room"
-placeholder="Room Code"
-value="ABC123"
-/>
-
-<button onclick="connect()">
-Connect
-</button>
-
-<br><br>
-
-<textarea
-id="editor"
-placeholder="Start typing..."
-></textarea>
-
-<script>
-
-let socket;
-
-const editor =
-document.getElementById("editor");
-
-function connect(){
-
-    const room =
-    document.getElementById("room").value;
-
-    socket =
-    new WebSocket(
-        `ws://localhost:8000/ws/${room}`
-    );
-
-    socket.onopen=()=>{
-
-        console.log("Connected");
-
-    };
-
-    socket.onmessage=(event)=>{
-
-        if(editor.value!==event.data){
-
-            editor.value=event.data;
-
-        }
-
-    };
-
-    editor.oninput=()=>{
-
-        socket.send(editor.value);
-
-    };
-
-}
-
-</script>
-
-</body>
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>frontend</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
